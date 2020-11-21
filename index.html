@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Manga translator</title>
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://bootflat.github.io/bootflat/css/bootflat.css"><link rel="stylesheet" href="css/site.css">
+    </head>
+
+    <body  onload="setInterval('scroll();', 250);" style="background-color:#231F20">
+ <script>
+function showResult(str) {
+  if (str.length==0) {
+    document.getElementById("searchresults").innerHTML="";
+    document.getElementById("searchresults").style.border="0px";
+	document.getElementById("searchresults").style.display="hidden";
+    return;
+  }
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      document.getElementById("searchresults").innerHTML=this.responseText;
+      document.getElementById("searchresults").style.border="1px solid #A5ACB2";
+	  	document.getElementById("searchresults").style.display="block";
+    }
+  }
+  xmlhttp.open("GET","livesearch.php?q="+str,true);
+  xmlhttp.send();
+}
+</script><script>
+var contentHeight =  660;
+var pageHeight = document.documentElement.clientHeight;
+var scrollPosition;
+var n = 0;
+var xmlhttp;
+
+function putImages(){
+	
+	if (xmlhttp.readyState==4) 
+	  {
+		  if(xmlhttp.responseText){
+			 var resp = xmlhttp.responseText.replace("\r\n", ""); 
+			 var files = resp.split(";");
+			  var j = 0;
+			  for(i=0; i<files.length; i++){
+				  if(files[i] != ""){
+					 document.getElementById("container").innerHTML += '<a class="cover" href="manga/'+files[i]+'"><img width="199px" height="299px" src="cover/'+files[i]+'" /></a>';
+					 j++;
+				  
+					// if(j == 3 || j == 6)
+					//	  document.getElementById("container").innerHTML += '<br />';
+					//  else if(j == 9){
+					//	  document.getElementById("container").innerHTML += '<p>'+(n-1)+" Images Displayed | <a href='#header'>top</a></p><br /><hr />";
+					//	  j = 0;
+					 // }
+				  }
+			  }
+		  }
+	  }
+}
+		
+		
+function scroll(){
+	
+	if(navigator.appName == "Microsoft Internet Explorer")
+		scrollPosition = document.documentElement.scrollTop;
+	else
+		scrollPosition = window.pageYOffset;		
+	
+	if((contentHeight - pageHeight - scrollPosition) < 500){
+				
+		if(window.XMLHttpRequest)
+			xmlhttp = new XMLHttpRequest();
+		else
+			if(window.ActiveXObject)
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			else
+				alert ("Bummer! Your browser does not support XMLHTTP!");		  
+		  
+		var url="getImages.php?n="+n;
+		
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send();
+		
+		n += 9;
+		xmlhttp.onreadystatechange=putImages;		
+		contentHeight += 810;		
+	}
+}
+
+</script>
+        <!-- Bootstrap -->
+        <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+        <!-- Bootflat's JS files.-->
+        <script src="https://bootflat.github.io/bootflat/js/icheck.min.js"></script>
+        <script src="https://bootflat.github.io/bootflat/js/jquery.fs.selecter.min.js"></script>
+        <script src="https://bootflat.github.io/bootflat/js/jquery.fs.stepper.min.js"></script>
+
+                <nav class="navbar navbar-inverse" role="navigation">
+                  <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-5">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" href="#">Manga Translator</a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
+                      <ul class="nav navbar-nav">
+                        <!-- <li class="active"><a href="#">Link</a></li>
+                             <li class="disabled"><a href="#">Link</a></li> 
+ -->
+                      </ul>
+                      <form class="navbar-form navbar-right" role="search">
+                        <div class="form-search search-only">
+                          <i class="search-icon glyphicon glyphicon-search"></i>
+                          <input size='17' placeholder="Search" onblur="this.size='17'" onfocus="this.size='32'" onkeyup="showResult(this.value)" type="text" class="form-control search-query">
+                        </div>
+						
+                      </form>                        
+                        <ul class="dropdown-menu navbar-right" style="margin-left: 78%;" id="searchresults" role="menu">
+                             
+                        </ul>   
+                          
+                         
+                    </div><!-- /.navbar-collapse -->
+                  </div><!-- /.container-fluid -->
+                </nav>
+              
+        <h2 style="margin:25px;color:#535a54" class="example-title">Recent Uploads</h2><hr style='border-top: 2px solid #434a54'>
+        <div class="row">
+            <!-- <div class="col-sm-6 col-md-3">
+              <div class="thumbnail">
+                <img class="img-rounded" src="img/thumbnail-1.jpg">
+                <div class="caption text-center">
+                  <h3>Thumbnail label</h3>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id ...</p>
+                  <p><a href="#" class="btn btn-warning" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail">
+                <img class="img-rounded" src="img/thumbnail-2.jpg">
+                <div class="caption text-center">
+                  <h3>Thumbnail label</h3>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id ...</p>
+                  <p><a href="#" class="btn btn-warning" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail">
+                <img class="img-rounded" src="img/thumbnail-3.jpg">
+                <div class="caption text-center">
+                  <h3>Thumbnail label</h3>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id ...</p>
+                  <p><a href="#" class="btn btn-warning" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <div class="thumbnail">
+                <img class="img-rounded" src="img/thumbnail-4.jpg">
+                <div class="caption text-center">
+                  <h3>Thumbnail label</h3>
+                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id ...</p>
+                  <p><a href="#" class="btn btn-warning" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a>  </p>
+                </div>
+              </div>
+            </div> -->
+			<center><div id="container">
+	 
+</div><img style='position:static; bolder:0px;bottom:10%;margin:auto;left:0px;right:0px;' src='img/load.gif'/></center>
+			
+ 
+
+          </div>
+      </body></html>
